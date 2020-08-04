@@ -18,7 +18,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     """Товар"""
-    category = models.ForeignKey(Category, verbose_name='Товар', on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.SET_NULL, null=True)
     name = models.CharField("Наименование", max_length=160, db_index=True)
     url = models.SlugField(max_length=160, db_index=True)
     image = models.ImageField("Изображение", upload_to='products/')
@@ -27,7 +27,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField("Количество")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    available = models.BooleanField(default=True)
+    available = models.BooleanField("В наличии", default=True)
 
     def __str__(self):
         return self.name
