@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from .models import Category, Product, ProductShots, Reviews
 
@@ -18,6 +19,18 @@ class ReviewInLine(admin.TabularInline):
     readonly_fields = ("name", "email")
 
 
+class ProductShotsInline(admin.TabularInline):
+    """Дополнителные фото на странице товара"""
+    model = ProductShots
+    extra = 0
+    readonly_fields = ("get_image",)
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="110" height="110"')
+
+    get_image.short_description = "Фото"
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     """Товары"""
@@ -27,16 +40,17 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ("price", "stock", "available")
     prepopulated_fields = {"url": ("name",)}
     search_fields = ("name", "category__name")
-    inlines = [ReviewInLine]
+    inlines = [ProductShotsInline, ReviewInLine]
     save_on_top = True
     save_as = True
+    readonly_fields = ("get_image",)
     # fields = ("category", ("name", "url"), ("description", "image"), ("price", "stock"), "available")
     fieldsets = (
         (None, {
             "fields": (("name", "category"),)
         }),
         (None, {
-            "fields": (("description", "image"),)
+            "fields": (("description", "image", "get_image"),)
         }),
         (None, {
             "fields": (("price", "stock"),)
@@ -45,6 +59,11 @@ class ProductAdmin(admin.ModelAdmin):
             "fields": (("url", "available"),)
         }),
     )
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="110" height="110"')
+
+    get_image.short_description = "Фото"
 
 
 @admin.register(Reviews)
@@ -57,4 +76,13 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(ProductShots)
 class ProductShotsAdmin(admin.ModelAdmin):
     """Дополнительные фото товара"""
-    list_display = ("title", "product")
+    list_display = ("title", "product", "get_image")
+    readonly_fields = ("get_image",)
+
+    def get_image(self, obj):
+        return mark_safe(f'<img src={obj.image.url} width="50" height="60"')
+
+    get_image.short_description = "Изображение"
+
+    admin.site.site_title = "Django магазин Сантехника"
+    admin.site.site_header = "Django магазин Сантехника"
