@@ -33,7 +33,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("product_detail", kwargs={'slug': self.url})
+        return reverse("shop:product_detail", kwargs={'slug': self.url})
 
     def get_review(self):
         return self.reviews_set.filter(parent__isnull=True)

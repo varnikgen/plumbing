@@ -23,6 +23,15 @@
                 <ul>
                     <li style="list-style: none"><span><b>Цена:</b> {{ product.price }} руб.</span></li>
                     <li style="list-style: none">
+                        <span>
+                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                {{ cart_product_form }}
+                                {% csrf_token %}
+                                <input type="submit" value="Добавить в корзину">
+                            </form>
+                        </span>
+                    </li>
+                    <li style="list-style: none">
                         <a href="#"><b>Рейтинг:</b>
                             <span class="fa fa-star" aria-hidden="true"
                                   style="outline: none; cursor: inherit;"></span>
@@ -81,7 +90,7 @@
                                     <span class="sub-tittle editContent"
                                           style="outline: none; cursor: inherit;">{{ product.reviews_set.count }}</span>Оставить
                         отзыв</h3>
-                    <form action="{% url 'add_review' product.id %}" method="post" class="mt-4" id="formReview">
+                    <form action="{% url 'shop:add_review' product.id %}" method="post" class="mt-4" id="formReview">
                         {% csrf_token %}
                         <input type="hidden" name="parent" id="contactparent" value="">
                         <div class="form-group editContent">
