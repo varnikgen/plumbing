@@ -58,17 +58,11 @@
                     </tr>
                     </tbody>
                     <p>
-                        <a href="{% url 'shop:product_list' %}" class="button light">Продолжить покупки</a>
+                        <a href="{% url 'shop:product_list' %}" class="button">Продолжить покупки</a>
                         <a href="#" class="button">Оформить</a>
                     </p>
                 </table>
             </div>
         </div>
     </div>
-    <script>
-        function addReview(name, id) {
-            document.getElementById("contactparent").value = id;
-            document.getElementById("contactcomment").innerText = `${name}, `
-        }
-    </script>
 {% endblock shop %}
