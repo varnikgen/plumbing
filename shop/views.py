@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 
 from cart.forms import CartAddProductForm
-from .models import Product
+from .models import Product, Category
 from .forms import ReviewForm
 
 
@@ -13,18 +13,15 @@ class ProductsView(ListView):
     queryset = Product.objects.filter(available=True)
 
 
-class ProductDetailView(View):
+class ProductDetailView(DetailView):
     """Полное описание товара"""
-    def get(self, request, slug):
-        product = Product.objects.get(url=slug)
-        cart_product_form = CartAddProductForm()
-        return render(request, 'shop/product_detail.html', {'product': product, 'cart_product_form': cart_product_form})
+    model = Product
+    slug_field = "url"
 
-
-# class ProductDetailView(DetailView):
-#     """Полное описание товара"""
-#     model = Product
-#     slug_field = "url"
+    def get_context_data(self, *args, **kwargs):
+        contest = super().get_context_data(*args, **kwargs)
+        contest["cart_product_form"] = CartAddProductForm()
+        return contest
 
 
 class AddReview(View):

@@ -38,6 +38,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display_links = ("name",)
     list_filter = ["available", "created", "updated"]
     list_editable = ("price", "stock", "available")
+    actions = ["publish", "unpublished"]
     prepopulated_fields = {"url": ("name",)}
     search_fields = ("name", "category__name")
     inlines = [ProductShotsInline, ReviewInLine]
@@ -62,6 +63,30 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.image.url} width="110" height="110"')
+
+    def unpublished(self, request, queryset):
+        """Сделать товар не доступным"""
+        row_update = queryset.update(available=False)
+        if row_update == 1:
+            message_bit = "1 запись была обновлена"
+        else:
+            message_bit = f"{row_update} записей были обновлены"
+        self.message_user(request, f"{message_bit}")
+
+    def publish(self, request, queryset):
+        """Сделать товар не доступным"""
+        row_update = queryset.update(available=False)
+        if row_update == '1':
+            message_bit = "1 запись была обновлена"
+        else:
+            message_bit = f"{row_update} записей были обновлены"
+        self.message_user(request, f"{message_bit}")
+
+    publish.short_description = "Опубликовать"
+    publish.allowed_permissions = ('change',)
+
+    unpublished.short_description = "Снять с публикации"
+    unpublished.allowed_permissions = ('change',)
 
     get_image.short_description = "Фото"
 
