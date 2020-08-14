@@ -1,3 +1,4 @@
+{% load static %}
 {% load product_tag %}
 <!-- header -->
 <header class="header">
@@ -13,7 +14,7 @@
             <label for="drop" class="toggle">Menu</label>
             <input type="checkbox" id="drop">
             <ul class="menu mt-2">
-                <li class="active"><a href="index.html">Главная</a></li>
+                <li class="active"><a href="/">Главная</a></li>
                 <li>
                     <!-- First Tier Drop Down -->
                     <label for="drop-2" class="toggle">Категории <span class="fa fa-angle-down"
@@ -26,6 +27,22 @@
                             <li><a href="/">{{ category.name }}</a></li>
                         {% endfor %}
                     </ul>
+                </li>
+                <li>
+                    {% with total_items=cart|length %}
+                        {% if cart|length > 0 %}
+                            <a href="{% url 'cart:cart_detail' %}">
+                                <img class="img-cart" src="{% static 'images/cart.png' %}">
+                                {{ total_items }} ед. на
+                                {{ cart.get_total_price }} руб.
+                            </a>
+                        {% else %}
+                            <a href="{% url 'cart:cart_detail' %}">
+                                <img class="img-cart" src="{% static 'images/cart.png' %}">
+                                Пусто
+                            </a>
+                        {% endif %}
+                    {% endwith %}
                 </li>
                 <li><a href="contact.html"
                        style="color: rgb(255, 255, 255); font-weight: 700; text-transform: uppercase;">Вход</a>
