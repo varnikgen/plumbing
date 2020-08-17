@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %} Спасибо! {% endblock title %}
+{% block container %}
+    <div class="container py-md-3">
+{% endblock container %}
+
+{% block sidebar %}
+    <div class="side-bar col-lg-4">
+{% endblock sidebar %}
+
+{% block shop %}
+    <div class="left-ads-display col-lg-8">
+        <div class="row">
+            <div>
+                <h1>Спасибо, что выбрали нас!</h1>
+                <p>Ваш заказ принят менеджер свяжется с вами в ближайшее время.
+                Номер вашего заказа <strong>{{ order.id }}</strong>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock shop %}

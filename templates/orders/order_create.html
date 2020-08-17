@@ -1,0 +1,37 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %} Ваш заказ {% endblock title %}
+{% block container %}
+    <div class="container py-md-3">
+{% endblock container %}
+
+{% block sidebar %}
+    <div class="side-bar col-lg-4">
+{% endblock sidebar %}
+
+{% block shop %}
+    <div class="left-ads-display col-lg-8">
+        <div class="row">
+            <div>
+                <h1>Оформление заказа</h1>
+                <div class="order-first">
+                    <h3>Ваш заказ</h3>
+                    <ul>
+                        {% for item in cart %}
+                            <li>
+                                {{ item.quantity }}x {{ item.product.name }}
+                                <span>{{ item.total_price }} руб.</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                <p>Итого: {{ cart.get_total_price }} руб.</p>
+                </div>
+                <form action="." method="post" class="order-first">
+                    {{ form.as_p }}
+                    <p><input type="submit" value="Place order"></p>
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock shop %}
